@@ -6,5 +6,4 @@ public class Constants {
     public static String BACKUP1C_FOLDER="backup1C";
     public static final String LOG4J2_PROPERTIES = "log4j2.configurationFile";
     public static final String ENV_DEFAULT = "./src/main/resources/environment.properties";
-    public static final String CSV_SERVER_KEY = "csvServer";
 }

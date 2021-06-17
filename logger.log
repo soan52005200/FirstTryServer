@@ -1,0 +1,8 @@
+2021-06-17 16:14:37 ERROR Main:23 - java.lang.NullPointerException
+2021-06-17 16:15:07 ERROR Main:23 - java.lang.NullPointerException
+2021-06-17 16:58:45 ERROR Main:23 - java.lang.NullPointerException
+2021-06-17 17:02:42 ERROR Main:23 - java.lang.NullPointerException
+2021-06-17 17:03:25 ERROR Main:23 - java.lang.NullPointerException
+2021-06-17 17:08:30 ERROR Main:23 - java.lang.NullPointerException
+2021-06-17 17:09:20 ERROR Main:23 - java.lang.NullPointerException
+2021-06-17 17:14:01 ERROR Main:23 - java.util.NoSuchElementException: No line found

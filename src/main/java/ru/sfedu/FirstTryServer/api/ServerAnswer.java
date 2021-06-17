@@ -45,7 +45,7 @@ public class ServerAnswer {
                 double d = attr.size();
                 out.println("size: " + (d / 1024 / 1024) + "GB");
 
-                var done = false;
+                /*var done = false;
 
                 while (!done) {
 
@@ -58,7 +58,7 @@ public class ServerAnswer {
                     if (line.trim().equals("BYE")) done = true;
                     if (line.trim().equals("STOP")) {repeat=false;done=true;}
                 }
-
+                */
 
 
             }

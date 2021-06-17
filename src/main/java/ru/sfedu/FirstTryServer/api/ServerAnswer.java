@@ -21,54 +21,48 @@ import static ru.sfedu.FirstTryServer.utils.ConfigurationUtil.getConfigurationEn
 
 public class ServerAnswer {
 
-    public ServerAnswer() {
-        var repeat=true;
-    while (repeat)
-    try (var s = new ServerSocket(PORT))
+    public ServerAnswer() throws IOException {
+        var repeat = true;
+        while (repeat)
+            try (var s = new ServerSocket(PORT)) {
 
-    {
+                try (Socket incoming = s.accept()) {
+                    InputStream inStream = incoming.getInputStream();
+                    OutputStream outStream = incoming.getOutputStream();
 
-        try (Socket incoming = s.accept()) {
-            InputStream inStream = incoming.getInputStream();
-            OutputStream outStream = incoming.getOutputStream();
+                    try (var in = new Scanner(inStream, StandardCharsets.UTF_8)) {
+                        var out = new PrintWriter(new OutputStreamWriter(outStream, StandardCharsets.UTF_8), true);
+                        Path absolute = Paths.get(getConfigurationEntry(BACKUP1C_FOLDER));
+                        Optional<Path> lastFilePath = Files.list(absolute)    // here we get the stream with full directory listing
+                                .filter(f -> !Files.isDirectory(f))  // exclude subdirectories from listing
+                                .max(Comparator.comparingLong(f -> f.toFile().lastModified()));  // finally get the last file using simple comparator by lastModified field
+                        BasicFileAttributes attr;
+                        attr = Files.readAttributes(Path.of(String.valueOf(lastFilePath.get())), BasicFileAttributes.class);
+                        out.println("----------------------------------------" + new Date() + "--------------------------------------");
+                        out.println("Creation date: " + attr.creationTime());
+                        double d = attr.size();
+                        out.println("size: " + (d / 1024 / 1024) + "GB");
 
-            try (var in = new Scanner(inStream, StandardCharsets.UTF_8)) {
-                var out = new PrintWriter(new OutputStreamWriter(outStream, StandardCharsets.UTF_8), true);
-                Path absolute = Paths.get(getConfigurationEntry(BACKUP1C_FOLDER));
-                Optional<Path> lastFilePath = Files.list(absolute)    // here we get the stream with full directory listing
-                        .filter(f -> !Files.isDirectory(f))  // exclude subdirectories from listing
-                        .max(Comparator.comparingLong(f -> f.toFile().lastModified()));  // finally get the last file using simple comparator by lastModified field
-                BasicFileAttributes attr;
-                attr = Files.readAttributes(Path.of(String.valueOf(lastFilePath.get())), BasicFileAttributes.class);
-                out.println("----------------------------------------" + new Date() + "--------------------------------------");
-                out.println("Creation date: " + attr.creationTime());
-                double d = attr.size();
-                out.println("size: " + (d / 1024 / 1024) + "GB");
+                        var done = false;
 
-                /*var done = false;
+                        while (!done) {
 
-                while (!done) {
+                            //////////////////////////////////////////////////////
+                            // клиента здесь можно делать всё что угодно!!!!!!! //
+                            //////////////////////////////////////////////////////
 
-                    //////////////////////////////////////////////////////
-                    // клиента здесь можно делать всё что угодно!!!!!!! //
-                    //////////////////////////////////////////////////////
-
-                    String line = in.nextLine();            //line - то что от клиента пришло(можно с этим поработать)
-                    out.println("Echo: " + line);           //out - то что мы отправим клиенту.
-                    if (line.trim().equals("BYE")) done = true;
-                    if (line.trim().equals("STOP")) {repeat=false;done=true;}
-                }
-                */
+                            String line = in.nextLine();            //line - то что от клиента пришло(можно с этим поработать)
+                            out.println("Echo: " + line);           //out - то что мы отправим клиенту.
+                            if (line.trim().equals("BYE")) done = true;
+                            if (line.trim().equals("STOP")) {
+                                repeat = false;
+                                done = true;
+                            }
 
 
+                        }
+
+                    } catch (IOException ioException) {
+                ioException.printStackTrace();
             }
-
-        }
-
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
-
-
-}
-}
+                }}}}
